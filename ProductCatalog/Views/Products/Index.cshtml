@@ -1,0 +1,67 @@
+@model ProductCatalog.Models.CatalogViewModel
+@{ ViewData["Title"] = "Products"; }
+
+<div class="page-heading">
+    <div>
+        <h1>Product Catalog</h1>
+        <p>Simple ASP.NET MVC practical application.</p>
+    </div>
+    <a class="button button-primary" asp-action="Create">+ Add Product</a>
+</div>
+
+<form class="filter-form" method="get" asp-action="Index">
+    <input name="search" value="@Model.Search" placeholder="Search product name" />
+    <select name="category">
+        <option value="">All Categories</option>
+        @foreach (var item in Model.Categories)
+        {
+            <option value="@item" selected="@(Model.Category == item)">@item</option>
+        }
+    </select>
+    <select name="sort">
+        <option value="featured" selected="@(Model.Sort == "featured")">Featured</option>
+        <option value="name" selected="@(Model.Sort == "name")">Product Name</option>
+        <option value="price-low" selected="@(Model.Sort == "price-low")">Price Low to High</option>
+        <option value="price-high" selected="@(Model.Sort == "price-high")">Price High to Low</option>
+    </select>
+    <button class="button button-primary" type="submit">Search</button>
+    <a class="button" asp-action="Index">Clear</a>
+</form>
+
+@if (TempData["Notice"] is string notice)
+{
+    <div class="alert-success">@notice</div>
+}
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr><th>Id</th><th>Product Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        @if (Model.Products.Count == 0)
+        {
+            <tr><td colspan="6" class="empty-cell">No products found.</td></tr>
+        }
+        else
+        {
+            @foreach (var product in Model.Products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td><strong>@product.Name</strong></td>
+                    <td>@product.Category</td>
+                    <td>@product.Price.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-IN"))</td>
+                    <td>@product.Stock</td>
+                    <td class="actions">
+                        <a asp-action="Details" asp-route-id="@product.Id">View</a>
+                        <a asp-action="Edit" asp-route-id="@product.Id">Edit</a>
+                        <a class="danger-link" asp-action="Delete" asp-route-id="@product.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+<p class="record-count">Total products: @Model.TotalProducts</p>

@@ -1,0 +1,4 @@
+@model ProductCatalog.Models.Product
+@{ViewData["Title"]="Add a product";}
+<div class="page-shell form-page"><a class="back-link" asp-action="Index">← Back to the collection</a><div class="form-heading"><div class="eyebrow"><span class="eyebrow-line"></span> THE COLLECTION</div><h1>Add something <em>good.</em></h1><p>Every detail helps tell the story.</p></div><form asp-action="Create" method="post" class="product-form"><partial name="_ProductForm" model="Model"/><div class="form-actions"><a class="button button-outline" asp-action="Index">Cancel</a><button class="button button-dark" type="submit">Add to collection <span>↗</span></button></div></form></div>
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}
